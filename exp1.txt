@@ -1,0 +1,81 @@
+EX NO: 1
+
+#Read data set
+i<-read.csv('Iris.csv')
+d<-read.csv('demographics_corrected.csv')
+
+#Create vectors for Age, Diastolic pressure, and Systolic pressure
+Age <- c(35, 65, 49, 30, 20, 40, 90, 54, 78, 45)
+Systolic <- c(122, 120, 120, 115, 130, 131, 118, 122, 120, 115)
+Diastolic <- c(83, 79, 78, 72, 90, 90, 82, 80, 82, 75)
+
+#Calculate the following statistics for each variable
+statistics <- function(x) {
+n <- length(x)
+min_val <- min(x)
+max_val <- max(x)
+median_val <- median(x)
+mean_val <- mean(x)
+var_val <- var(x)
+sd_val <- sd(x)
+
+return(c(n, min_val, max_val, median_val, mean_val, var_val, sd_val))
+}
+Age_stats <- statistics(Age)
+Systolic_stats <- statistics(Systolic)
+Diastolic_stats <- statistics(Diastolic)
+
+results <- data.frame(
+Statistic = c("Number of samples", "Minimum value", "Maximum value", "Median", "Mean",
+"Variance", "Standard deviation"),
+Age = Age_stats,
+
+Systolic = Systolic_stats,
+Diastolic = Diastolic_stats
+)
+
+#Present the results in a table format
+print(results)
+
+#View first 6 rows
+head(i,6)
+tail(i,6)
+
+#Statistical summary
+data(i)
+summary(i)
+
+#Mean petal width of the Iris versicolor species
+versicolor_data <- iris[iris$Species == "versicolor", ]
+mean_petal_width <- mean(versicolor_data$Petal.Width)
+print(mean_petal_width)
+
+# Create a histogram of petal width
+hist(iris$Petal.Width,
+main = "Histogram of Petal Width",
+xlab = "Petal Width",
+ylab = "Frequency",
+col = "skyblue",
+border = "white")
+
+# Calculate mean, median, variance, and standard deviation of sepal length for each species
+summary_stats <- aggregate(Sepal.Length ~ Species, data = iris,
+FUN = function(x) c(mean = mean(x),
+
+median = median(x),
+variance = var(x),
+std_deviation = sd(x)))
+
+print(summary_stats)
+
+# Calculate mean, median, variance, and standard deviation of sepal length for each species
+library(dplyr)
+library(tidyr)
+library(knitr)
+summary_stats <- iris %>%
+group_by(Species) %>%
+summarise(mean_sepal_length = mean(Sepal.Length),
+median_sepal_length = median(Sepal.Length),
+variance_sepal_length = var(Sepal.Length),
+sd_sepal_length = sd(Sepal.Length))
+kable(summary_stats, caption = "Summary Statistics of Sepal Length by Species")
